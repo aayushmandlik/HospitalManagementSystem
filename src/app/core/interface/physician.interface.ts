@@ -1,3 +1,4 @@
+import { Patients } from "./patients.interface";
 import { TrainedIn } from "./trainedin.interface"
 
 export interface Physician{
@@ -10,13 +11,7 @@ export interface Physician{
       appointmentId: number,
       starDateTime: Date,
       endDateTime: Date,
-      patient: {
-        patientId: number,
-        name: string,
-        address: string,
-        phone: string,
-        createdOn: Date
-      }
+      patient: Patients
     }
   ],
   trainedIn: TrainedIn

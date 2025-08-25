@@ -3,9 +3,12 @@
 <mat-drawer-container class="example-container">
   <mat-drawer mode="side" opened>
     <a routerLink="/physician">Physician</a><br>
-    <a routerLink="/nurse">Nurse</a>
+    <a routerLink="/nurse">Nurse</a><br>
+    <a routerLink="/patients">Patients</a><br>
+    <a routerLink="/block">Block</a><br>
+    <a routerLink="/onCall">OnCall</a>
   </mat-drawer>
-  <mat-drawer-content>
+  <mat-drawer-content style="padding: 20px;">
     <router-outlet></router-outlet>
   </mat-drawer-content>
 </mat-drawer-container>

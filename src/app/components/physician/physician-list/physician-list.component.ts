@@ -3,16 +3,17 @@ import { PhysicianService } from '../../../core/services/physician.service';
 import { Physician, PhysicianCreate, PhysicianDelete, PhysicianUpdate } from '../../../core/interface/physician.interface';
 import {MatTableModule} from '@angular/material/table'
 import { MatTableDataSource } from '@angular/material/table';
-import { MatFormField } from '@angular/material/form-field';
-import { MatInput } from '@angular/material/input';
-import { MatButton } from '@angular/material/button';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule} from '@angular/material/input';
+import { MatButtonModule } from '@angular/material/button';
 import { MatLabel } from '@angular/material/form-field';
 import { FormBuilder, FormGroup, FormsModule, Validators } from '@angular/forms';
 import { ReactiveFormsModule } from '@angular/forms';
+import { MatToolbarModule } from "@angular/material/toolbar";
 
 @Component({
   selector: 'app-physician-list',
-  imports: [MatTableModule,FormsModule,ReactiveFormsModule,MatFormField,MatInput,MatButton,MatLabel],
+  imports: [MatTableModule, FormsModule, ReactiveFormsModule, MatFormFieldModule, MatInputModule, MatButtonModule, MatLabel, MatToolbarModule],
   templateUrl: './physician-list.component.html',
   styleUrl: './physician-list.component.css'
 })
@@ -27,6 +28,7 @@ export class PhysicianListComponent implements OnInit {
     position: ''
   }
   isEdit = false
+  searchTerm: string = ""
 
   constructor(private physicianService: PhysicianService, private fb: FormBuilder){
     this.physicianForm = this.fb.group({
@@ -77,8 +79,19 @@ export class PhysicianListComponent implements OnInit {
   }
 
   deletePhysician(physician: PhysicianDelete){
-    this.physicianService.deletePhysician(physician).subscribe(()=>{
+    if(confirm(`Are you Sure, You want to delete ${physician.name}`)){
+      this.physicianService.deletePhysician(physician).subscribe(()=>{
       this.loadPhysician()
     })
+    }
+  }
+
+  onSearch(event: Event){
+    const searchInput = event.target as HTMLInputElement
+    this.searchTerm = searchInput.value
+    this.dataSource.data = this.physicianList.filter((data) => {
+      return data.name.toLowerCase().includes(this.searchTerm.toLowerCase()) || data.position.toLowerCase().includes(this.searchTerm.toLowerCase())
+    })
+
   }
 }

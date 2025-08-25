@@ -1,32 +1,60 @@
-<table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="padding:20px; border-radius: 20px;">
-    <ng-container matColumnDef="nurseId">
-      <th mat-header-cell *matHeaderCellDef>Nurse Id</th>
-      <td mat-cell *matCellDef="let element">{{element.nurseId}}</td>
-    </ng-container>
-    <ng-container matColumnDef="name">
-      <th mat-header-cell *matHeaderCellDef>Nurse Name</th>
-      <td mat-cell *matCellDef="let element">{{element.name}}</td>
-    </ng-container>
-    <ng-container matColumnDef="position">
-      <th mat-header-cell *matHeaderCellDef>Nurse Position</th>
-      <td mat-cell *matCellDef="let element">{{element.position}}</td>
-    </ng-container>
-    <ng-container matColumnDef="registered">
-      <th mat-header-cell *matHeaderCellDef>Nurse Registration</th>
-      <td mat-cell *matCellDef="let element">{{element.registered}}</td>
-    </ng-container>
-    <ng-container matColumnDef="createdOn">
-      <th mat-header-cell *matHeaderCellDef>Nurse Created Date</th>
-      <td mat-cell *matCellDef="let element">{{element.createdOn}}</td>
-    </ng-container>
-    <!-- <ng-container matColumnDef="actions">
-      <th mat-header-cell *matHeaderCellDef>Actions</th>
-      <td mat-cell *matCellDef="let element">
-        <button mat-raised-button color="primary" (click)="editPhysician(element)">Edit</button>
-        <button mat-raised-button color="warn" (click)="deletePhysician(element)">Delete</button>
-      </td>
-    </ng-container> -->
+<div style="display: flex; flex-direction: column; gap: 30px;">
+  <mat-toolbar style="background-color: aliceblue; border-radius: 20px;">
+    <span>NURSE</span>
+  </mat-toolbar>
 
-    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
-    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
-  </table>
+  <div style="border: 1px solid gray; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+      <form [formGroup]="nurseForm" (ngSubmit)="onSubmit()" style="display: flex; flex-direction: column;">
+        <div style="display: flex; gap: 20px;">
+          <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+            <mat-label>Nurse Name</mat-label>
+            <input matInput placeholder="Eg. Sushman Sen" formControlName="name">
+          </mat-form-field>
+          <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+            <mat-label>Nurse Position</mat-label>
+            <input matInput placeholder="Eg. Junior Nurse" formControlName="position">
+          </mat-form-field>
+        </div>
+        <button mat-raised-button type="submit">{{isEdit ? 'Update' : 'Add'}}</button>
+      </form>
+  </div>
+
+  <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Search Physician By Name or Position" (input)="onSearch($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="padding:20px; border-radius: 20px; margin-bottom: 30px;">
+      <ng-container matColumnDef="nurseId">
+        <th mat-header-cell *matHeaderCellDef>Nurse Id</th>
+        <td mat-cell *matCellDef="let element">{{element.nurseId}}</td>
+      </ng-container>
+      <ng-container matColumnDef="name">
+        <th mat-header-cell *matHeaderCellDef>Nurse Name</th>
+        <td mat-cell *matCellDef="let element">{{element.name}}</td>
+      </ng-container>
+      <ng-container matColumnDef="position">
+        <th mat-header-cell *matHeaderCellDef>Nurse Position</th>
+        <td mat-cell *matCellDef="let element">{{element.position}}</td>
+      </ng-container>
+      <ng-container matColumnDef="registered">
+        <th mat-header-cell *matHeaderCellDef>Nurse Registration</th>
+        <td mat-cell *matCellDef="let element">{{element.registered === true ? 'Registered' : 'Not Registered'}}</td>
+      </ng-container>
+      <ng-container matColumnDef="createdOn">
+        <th mat-header-cell *matHeaderCellDef>Nurse Created Date</th>
+        <td mat-cell *matCellDef="let element">{{element.createdOn}}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button color="primary" (click)="editNurse(element)" style="margin-right: 10px;">Edit</button>
+          <button mat-raised-button color="warn" (click)="deleteNurse(element)">Delete</button>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+    </table>
+
+</div>

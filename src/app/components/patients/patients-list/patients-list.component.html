@@ -1,0 +1,70 @@
+<div style="display: flex; flex-direction: column; gap: 30px;">
+
+  <mat-toolbar style="background-color: aliceblue; border-radius: 20px;">
+    <span>PATIENTS</span>
+  </mat-toolbar>
+
+  <div style="border: 1px solid gray; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+    <form [formGroup]="patientsForm" (ngSubmit)="addPatient()" style="display: flex; flex-direction: column;">
+      <!-- <h1 style="text-align: center;">ADD PHYSICIAN</h1> -->
+      <div style="display: flex; flex-direction: column; gap: 10px;">
+        <div style="display: flex; gap: 20px;">
+          <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+            <mat-label>Patients Name</mat-label>
+            <input matInput placeholder="Eg. Ajay Singh" formControlName="name">
+          </mat-form-field>
+          <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+            <mat-label>Patients Phone</mat-label>
+            <input matInput placeholder="Eg. 9865324785" formControlName="phone">
+          </mat-form-field>
+        </div>
+        <div>
+          <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+            <mat-label>Patients Address</mat-label>
+            <textarea matInput placeholder="Eg. A-201, Geeta Complex, Linking Rd, Bandra(W)" formControlName="address"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      <button mat-raised-button type="submit">{{isEdit ? 'Update' : 'Add'}}</button>
+    </form>
+  </div>
+
+  <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Search Physician" (input)="onSearch($event)">
+  </mat-form-field>
+
+  <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="padding:20px; border-radius: 20px;">
+    <ng-container matColumnDef="patientId">
+      <th mat-header-cell *matHeaderCellDef>Patient Id</th>
+      <td mat-cell *matCellDef="let element">{{element.patientId}}</td>
+    </ng-container>
+    <ng-container matColumnDef="name">
+      <th mat-header-cell *matHeaderCellDef>Patient Name</th>
+      <td mat-cell *matCellDef="let element">{{element.name}}</td>
+    </ng-container>
+    <ng-container matColumnDef="phone">
+      <th mat-header-cell *matHeaderCellDef>Patient Phone</th>
+      <td mat-cell *matCellDef="let element">{{element.phone}}</td>
+    </ng-container>
+    <ng-container matColumnDef="address">
+      <th mat-header-cell *matHeaderCellDef>Patient Address</th>
+      <td mat-cell *matCellDef="let element">{{element.address}}</td>
+    </ng-container>
+    <ng-container matColumnDef="createdOn">
+      <th mat-header-cell *matHeaderCellDef>Patient CreatedOn</th>
+      <td mat-cell *matCellDef="let element">{{element.createdOn}}</td>
+    </ng-container>
+    <ng-container matColumnDef="actions">
+      <th mat-header-cell *matHeaderCellDef>Actions</th>
+      <td mat-cell *matCellDef="let element">
+        <button mat-raised-button color="primary" (click)="editPatient(element)" style="margin-right: 10px;">Edit</button>
+        <button mat-raised-button color="warn" (click)="deletePatient(element)">Delete</button>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+  </table>
+
+</div>

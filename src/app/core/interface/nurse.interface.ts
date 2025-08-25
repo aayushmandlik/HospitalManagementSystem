@@ -1,7 +1,7 @@
 export interface Nurse {
-  nurseId: number,
+  nurseId?: number,
   name: string,
   position: string,
   registered: boolean,
-  createdOn: Date
+  createdOn?: Date
 }
