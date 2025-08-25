@@ -1,3 +1,4 @@
+import { Nurse } from './../../../core/interface/nurse.interface';
 import { AfterViewInit, Component, OnInit, ViewChild } from '@angular/core';
 import { OnCall, OnCallOperation } from '../../../core/interface/onCall.interface';
 import { MatTableDataSource, MatTableModule } from '@angular/material/table';
@@ -8,7 +9,6 @@ import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
 import { NurseListComponent } from '../../nurse/nurse-list/nurse-list.component';
-import { Nurse } from '../../../core/interface/nurse.interface';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { NurseService } from '../../../core/services/nurse.service';
@@ -48,10 +48,10 @@ export class OnCallListComponent implements OnInit {
 
   constructor(private onCallService: OnCallService,private nurseService: NurseService,private blockService: BlockService, private fb: FormBuilder){
     this.onCallForm = this.fb.group({
-      nurse: [0,Validators.required],
-      block: [0,Validators.required],
-      start: ['', Validators.required],
-      end: ['', Validators.required]
+      nurse: [null,Validators.required],
+      block: [null,Validators.required],
+      start: [null, Validators.required],
+      end: [null, Validators.required]
     })
   }
 
@@ -110,7 +110,13 @@ export class OnCallListComponent implements OnInit {
     // }
     // else
     // {
-      const onCallData: OnCallOperation = {...formData}
+      const onCallData: OnCallOperation = {
+        onCallId: 0,
+        nurseId: formData.nurse,
+        blockId: formData.block,
+        onCallStart: new Date(formData.start),
+        onCallEnd: new Date(formData.end)
+      }
       console.log('Call Data',onCallData);
 
       this.onCallService.addOnCall(onCallData).subscribe(()=>{
