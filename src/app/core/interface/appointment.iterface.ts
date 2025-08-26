@@ -11,3 +11,12 @@ export interface Appointment{
     physician: Physician,
     prepNurse: OnCall
 }
+
+export interface AppointmentOperation{
+  appointmentId: number,
+  patientId?: number,
+  physicianId?: number,
+  onCallId?: number,
+  startDateTime: Date,
+  endDateTime: Date
+}

@@ -1,0 +1,78 @@
+<div style="display: flex; flex-direction: column; gap: 30px;">
+  <mat-toolbar style="background-color: aliceblue; border-radius: 20px;">
+    <span>STAY</span>
+  </mat-toolbar>
+
+  <!-- <div style="border: 1px solid gray; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+      <form [formGroup]="roomForm" (ngSubmit)="addRoom()" style="display: flex; flex-direction: column;">
+        <div style="display: flex; gap: 20px; justify-content: center;">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Room Number</mat-label>
+            <input matInput placeholder="Eg. 100" formControlName="roomNumber">
+          </mat-form-field>
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label>Room Type</mat-label>
+            <input matInput placeholder="Eg. Maternity Care Patient Room" formControlName="roomType">
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Select Block</mat-label>
+            <mat-select formControlName="blockId">
+              @for(block of blockList; track block.blockId){
+                <mat-option [value]="block.blockId">{{block.blockCode}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Select Availability</mat-label>
+            <mat-select  formControlName="availability">
+              <mat-option [value]="trueValue">Available</mat-option>
+              <mat-option [value]="falseValue">Not Available</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button type="submit">{{isEdit ? 'Update' : 'Add'}}</button>
+      </form>
+  </div> -->
+
+  <!-- <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Search Physician By Name or Position" (input)="onSearch($event)">
+  </mat-form-field> -->
+
+  <div style="overflow-x: auto;">
+     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="padding:20px; border-radius: 20px; margin-bottom: 30px; width: 100%;">
+      <ng-container matColumnDef="stayId">
+        <th mat-header-cell *matHeaderCellDef>Stay Id</th>
+        <td mat-cell *matCellDef="let element">{{element.stayId}}</td>
+      </ng-container>
+      <ng-container matColumnDef="startDateTime">
+        <th mat-header-cell *matHeaderCellDef>Start Date</th>
+        <td mat-cell *matCellDef="let element">{{element.startDateTime}}</td>
+      </ng-container>
+      <ng-container matColumnDef="endDateTime">
+        <th mat-header-cell *matHeaderCellDef>End Date</th>
+        <td mat-cell *matCellDef="let element">{{element.endDateTime}}</td>
+      </ng-container>
+      <ng-container matColumnDef="blockFloor">
+        <th mat-header-cell *matHeaderCellDef>Block Floor</th>
+        <td mat-cell *matCellDef="let element">{{element.room.block.blockFloor}}</td>
+      </ng-container>
+      <ng-container matColumnDef="blockCode">
+        <th mat-header-cell *matHeaderCellDef>Block Code</th>
+        <td mat-cell *matCellDef="let element">{{element.room.block.blockCode}}</td>
+      </ng-container>
+      <ng-container matColumnDef="roomNumber">
+        <th mat-header-cell *matHeaderCellDef>Room Number</th>
+        <td mat-cell *matCellDef="let element">{{element.room.roomNumber}}</td>
+      </ng-container>
+      <ng-container matColumnDef="roomType">
+        <th mat-header-cell *matHeaderCellDef>Room Type</th>
+        <td mat-cell *matCellDef="let element">{{element.room.roomType}}</td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+    </table>
+  </div>
+
+</div>

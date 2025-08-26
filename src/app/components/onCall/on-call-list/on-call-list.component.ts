@@ -8,7 +8,6 @@ import { MatToolbarModule } from '@angular/material/toolbar';
 import { MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
 import { MatButtonModule } from '@angular/material/button';
-import { NurseListComponent } from '../../nurse/nurse-list/nurse-list.component';
 import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { NurseService } from '../../../core/services/nurse.service';
@@ -29,22 +28,26 @@ export class OnCallListComponent implements OnInit {
   nurseList: Nurse[] = []
   blockList: Block[] = []
   dataSource = new MatTableDataSource<OnCall>()
-  displayColumns = ['onCallId','nurseId','name','blockId','blockCode','onCallStart','onCallEnd']
+  displayColumns = ['onCallId','nurseId','name','blockId','blockFloor','blockCode','onCallStart','onCallEnd','actions']
   onCallForm!: FormGroup
-  currentOnCall: OnCallOperation = {
+  currentOnCall: OnCall = {
     onCallId: 0,
-    nurseId: 0,
-    blockId: 0,
+    nurse: {
+      name: '',
+      position: '',
+      registered: true
+    },
+    block: {
+      blockFloor: 0,
+      blockCode: 0
+    },
     onCallStart: new Date(),
     onCallEnd: new Date()
 
   }
   isEdit = false
-  selectedNurse = 'None';
-  selectedBlock = 'None';
+
   searchTerm: string = ""
-  nurseSelected = {}
-  blockSelected = {}
 
   constructor(private onCallService: OnCallService,private nurseService: NurseService,private blockService: BlockService, private fb: FormBuilder){
     this.onCallForm = this.fb.group({
@@ -59,16 +62,6 @@ export class OnCallListComponent implements OnInit {
     this.loadOnCall()
     this.loadNurse()
     this.loadBlock()
-  }
-
-  selectNurse(nurse: Nurse){
-    this.nurseSelected = nurse
-    console.log(this.nurseSelected)
-  }
-
-  selectBlock(block: Block){
-    this.blockSelected = block
-    console.log(this.blockSelected);
   }
 
 
@@ -99,47 +92,67 @@ export class OnCallListComponent implements OnInit {
   addOnCall(){
     const formData = this.onCallForm.value
     console.log(formData);
+    const onCallData: OnCallOperation = {
+      onCallId: this.isEdit ? this.currentOnCall.onCallId : 0,
+      nurseId: formData.nurse,
+      blockId: formData.block,
+      onCallStart: new Date(formData.start),
+      onCallEnd: new Date(formData.end)
+    }
 
-    // if(this.isEdit){
-    //   const updateOnCall: OnCallOperation = {...this.currentOnCall,...formData}
-    //   this.onCallService.updateOnCall(updateOnCall).subscribe(()=>{
-    //     this.loadOnCall()
-    //     this.onCallForm.reset()
-    //     this.isEdit=false
-    //   })
-    // }
-    // else
-    // {
-      const onCallData: OnCallOperation = {
-        onCallId: 0,
-        nurseId: formData.nurse,
-        blockId: formData.block,
-        onCallStart: new Date(formData.start),
-        onCallEnd: new Date(formData.end)
-      }
+    if(this.isEdit){
+      // const updateOnCall: OnCallOperation = {...this.currentOnCall,...formData}
+      this.onCallService.updateOnCall(onCallData).subscribe(()=>{
+        this.loadOnCall()
+        this.onCallForm.reset()
+        this.isEdit=false
+      })
+    }
+    else
+    {
+      // const onCallData: OnCallOperation = {
+      //   onCallId: 0,
+      //   nurseId: formData.nurse,
+      //   blockId: formData.block,
+      //   onCallStart: new Date(formData.start),
+      //   onCallEnd: new Date(formData.end)
+      // }
       console.log('Call Data',onCallData);
 
       this.onCallService.addOnCall(onCallData).subscribe(()=>{
         this.loadOnCall()
         this.onCallForm.reset()
       })
-    // }
+    }
   }
 
-  // editBlock(blockData: Block){
-  //   this.currentBlock = {...blockData}
-  //   this.blockForm.patchValue({
-  //     blockFloor : blockData.blockFloor,
-  //     blockCode: blockData.blockCode
-  //   })
-  //   this.isEdit=true
-  // }
+  editOnCall(oncallData: OnCall){
+    this.currentOnCall = {...oncallData}
+    this.onCallForm.patchValue({
+      nurse : oncallData.nurse.nurseId,
+      block: oncallData.block.blockId,
+      start: new Date(oncallData.onCallStart),
+      end: new Date(oncallData.onCallEnd)
+    })
+    this.isEdit=true
+  }
 
-  // deleteBlock(blockData: Block){
-  //   if(confirm(`Are you Sure, You want to delete ${blockData.blockCode}`)){
-  //     this.blockService.deleteBlock(blockData).subscribe(()=>{
-  //     this.loadBlock()
-  //   })
-  //   }
-  // }
+  deleteOnCall(onCallData: OnCall){
+    if(confirm(`Are you Sure, You want to delete ${onCallData.onCallId}`)){
+      console.log(onCallData);
+
+      const deleteData: OnCallOperation = {
+        onCallId: onCallData.onCallId,
+        nurseId: onCallData.nurse.nurseId,
+        blockId: onCallData.block.blockId,
+        onCallStart: onCallData.onCallStart,
+        onCallEnd: onCallData.onCallEnd
+      }
+
+      this.onCallService.deleteOnCall(deleteData).subscribe(()=>{
+      this.loadOnCall()
+    })
+    }
+  }
+
 }
