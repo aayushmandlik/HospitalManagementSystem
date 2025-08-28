@@ -1,0 +1,93 @@
+<div style="display: flex; flex-direction: column; gap: 30px;">
+  <mat-toolbar style="background-color: aliceblue; border-radius: 20px;">
+    <span>TRAINED IN</span>
+  </mat-toolbar>
+
+  <div style="border: 1px solid gray; padding: 20px; border-radius: 20px; margin-bottom: 20px;">
+      <form [formGroup]="trainedInForm" (ngSubmit)="addTrainedIn()" style="display: flex; flex-direction: column;">
+        <div style="display: flex; gap: 20px; justify-content: center;">
+          <mat-form-field>
+            <mat-label>Select Physician</mat-label>
+            <mat-select formControlName="physician">
+              @for(physician of physicianList; track physician.physicianId){
+                <mat-option [value]="physician.physicianId">{{physician.name}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Select Treatment</mat-label>
+            <mat-select formControlName="treatment">
+              @for(procedure of procedureList; track procedure.procedureId){
+                <mat-option [value]="procedure.procedureId">{{procedure.name}}</mat-option>
+              }
+            </mat-select>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Certification Date</mat-label>
+            <input matInput [matDatepicker]="picker1" formControlName="certificationDate">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+          <mat-form-field>
+            <mat-label>Certification Expires</mat-label>
+            <input matInput [matDatepicker]="picker2" formControlName="certificationExpires">
+            <mat-hint>MM/DD/YYYY</mat-hint>
+            <mat-datepicker-toggle matIconSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <button mat-raised-button type="submit">{{isEdit ? 'Update' : 'Add'}}</button>
+      </form>
+  </div>
+
+  <!-- <mat-form-field class="full-width" appearance="outline" style="width: 100%;">
+    <mat-label>Search</mat-label>
+    <input matInput placeholder="Search Physician By Name or Position" (input)="onSearch($event)">
+  </mat-form-field> -->
+
+  <div style="overflow-x: auto;">
+     <table mat-table [dataSource]="dataSource" class="mat-elevation-z8" style="padding:20px; border-radius: 20px; margin-bottom: 30px; width: 100%; min-width: 1700px;">
+      <ng-container matColumnDef="trainedInId">
+        <th mat-header-cell *matHeaderCellDef>Trained Id</th>
+        <td mat-cell *matCellDef="let element">{{element.trainedInId}}</td>
+      </ng-container>
+      <ng-container matColumnDef="physicianId">
+        <th mat-header-cell *matHeaderCellDef>Physician Id</th>
+        <td mat-cell *matCellDef="let element">{{element.physicianId}}</td>
+      </ng-container>
+      <ng-container matColumnDef="physicianName">
+        <th mat-header-cell *matHeaderCellDef>Physician Name</th>
+        <td mat-cell *matCellDef="let element">{{element.physcianName}}</td>
+      </ng-container>
+      <ng-container matColumnDef="certificationDate">
+        <th mat-header-cell *matHeaderCellDef>Certification Date</th>
+        <td mat-cell *matCellDef="let element">{{element.certificationDate}}</td>
+      </ng-container>
+      <ng-container matColumnDef="certificationExpires">
+        <th mat-header-cell *matHeaderCellDef>Certification Expires</th>
+        <td mat-cell *matCellDef="let element">{{element.certificationExpires}}</td>
+      </ng-container>
+      <ng-container matColumnDef="treatmentName">
+        <th mat-header-cell *matHeaderCellDef>Treatment Name</th>
+        <td mat-cell *matCellDef="let element">{{element.treatment.name}}</td>
+      </ng-container>
+      <ng-container matColumnDef="createdOn">
+        <th mat-header-cell *matHeaderCellDef>Created On</th>
+        <td mat-cell *matCellDef="let element">{{element.createdOn}}</td>
+      </ng-container>
+      <ng-container matColumnDef="actions">
+        <th mat-header-cell *matHeaderCellDef>Actions</th>
+        <td mat-cell *matCellDef="let element">
+          <button mat-raised-button color="primary" (click)="editTrainedIn(element)" style="margin-right: 10px;">Edit</button>
+          <button mat-raised-button color="warn" (click)="deleteTrainedIn(element)">Delete</button>
+        </td>
+      </ng-container>
+
+
+      <tr mat-header-row *matHeaderRowDef="displayColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayColumns;"></tr>
+    </table>
+  </div>
+
+</div>

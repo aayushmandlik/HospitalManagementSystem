@@ -13,6 +13,8 @@ import { MatSelectModule } from '@angular/material/select';
 import { MatOptionModule } from '@angular/material/core';
 import { MatDatepickerModule } from '@angular/material/datepicker';
 import {provideNativeDateAdapter} from '@angular/material/core';
+import { PatientsService } from '../../../core/services/patients.service';
+import { Patients } from '../../../core/interface/patients.interface';
 
 
 @Component({
@@ -25,15 +27,16 @@ import {provideNativeDateAdapter} from '@angular/material/core';
 export class StayListComponent implements OnInit {
   stayList: Stay[] = []
   roomList: Room[] = []
+  patientList: Patients[] = []
   dataSource = new MatTableDataSource<Stay>()
-  displayColumns = ['stayId','startDateTime','endDateTime','blockFloor','blockCode','roomNumber','roomType']
+  displayColumns = ['stayId','startDateTime','endDateTime','blockFloor','blockCode','roomNumber','roomType','actions']
   stayForm!: FormGroup
 
   isEdit = false
 
   currentStayId?: number = 0
 
-  constructor(private stayService:StayService, private roomService: RoomService, private fb: FormBuilder){
+  constructor(private stayService:StayService, private roomService: RoomService,private patientService: PatientsService, private fb: FormBuilder){
     this.stayForm = this.fb.group({
       patientId: [null, Validators.required],
       roomId: [null,Validators.required],
@@ -45,6 +48,7 @@ export class StayListComponent implements OnInit {
   ngOnInit(): void {
     this.loadStay()
     this.loadRooms()
+    this.loadPatients()
   }
 
   loadStay(){
@@ -61,7 +65,13 @@ export class StayListComponent implements OnInit {
     })
   }
 
-  addRoom(){
+  loadPatients(){
+    this.patientService.getPatientsList().subscribe((data)=>{
+      this.patientList = data
+    })
+  }
+
+  addStay(){
       const formData = this.stayForm.value
       const stayData: StayOperation = {
         stayId: this.isEdit ? this.currentStayId : 0,
@@ -82,5 +92,27 @@ export class StayListComponent implements OnInit {
           this.stayForm.reset()
         })
       }
-    }
+  }
+
+  editStay(stayData: Stay){
+    this.currentStayId = stayData.stayId
+    this.stayForm.patchValue({
+      roomId: stayData.room.roomId,
+      startDateTime: stayData.startDateTime,
+      endDateTime: stayData.endDateTime
+    })
+    this.isEdit = true
+  }
+
+  // deleteStay(stayData: Stay){
+  //   if(confirm('Are You Sure, You Want to Delete ?'))
+  //   {
+  //     const deleteData: StayOperation = {
+  //       stayId: stayData.stayId,
+  //       patientId
+
+  //     }
+  //   }
+  // }
+
 }

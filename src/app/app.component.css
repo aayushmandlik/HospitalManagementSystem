@@ -8,3 +8,17 @@ mat-drawer{
   width: 15%;
   background-color: aliceblue;
 }
+a{
+  text-decoration: none;
+  color: slategray;
+  font-weight: 500;
+  padding: 10px;
+}
+a:hover{
+  background-color: lightgray;
+  border-radius: 20px;
+}
+.active{
+  background-color: lightblue;
+  border-radius: 20px;
+}

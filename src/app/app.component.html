@@ -2,14 +2,29 @@
 <button routerLink="/nurse">Nurse</button> -->
 <mat-drawer-container class="example-container">
   <mat-drawer mode="side" opened>
-    <a routerLink="/physician">Physician</a><br>
-    <a routerLink="/nurse">Nurse</a><br>
-    <a routerLink="/patients">Patients</a><br>
-    <a routerLink="/block">Block</a><br>
-    <a routerLink="/onCall">OnCall</a><br>
-    <a routerLink="/appointment">Appointment</a><br>
-    <a routerLink="/room">Room</a><br>
-    <a routerLink="/stay">Stay</a>
+    <div style="padding-bottom: 16px; padding-left: 24px; margin-top: 20px; border-bottom: 1px solid lightgray;">
+      <div style="display: flex; align-items: center; gap: 10px;">
+        <img src="https://cdn-icons-png.flaticon.com/128/6902/6902404.png" alt="" style="width: 70px; height: 70px;">
+        <div style="display: block;">
+          <h1 style="font-size: 30px; font-weight: bold; color: gray;">HMS</h1>
+          <!-- <p style="font-size: 10px; color: slategray;">Admin Panel</p> -->
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 20px; text-align: start; padding: 10px;">
+      <a routerLink="/physician" routerLinkActive="active">Physician</a>
+      <a routerLink="/nurse" routerLinkActive="active">Nurse</a>
+      <a routerLink="/patients" routerLinkActive="active">Patients</a>
+      <a routerLink="/block" routerLinkActive="active">Block</a>
+      <a routerLink="/onCall" routerLinkActive="active">OnCall</a>
+      <a routerLink="/appointment" routerLinkActive="active">Appointment</a>
+      <a routerLink="/room" routerLinkActive="active">Room</a>
+      <a routerLink="/stay" routerLinkActive="active">Stay</a>
+      <a routerLink="/procedure" routerLinkActive="active">Procedure</a>
+      <a routerLink="/medication" routerLinkActive="active">Medication</a>
+      <a routerLink="/prescribed" routerLinkActive="active">Prescribed</a>
+      <a routerLink="/trainedIn" routerLinkActive="active">Trained In</a>
+    </div>
   </mat-drawer>
   <mat-drawer-content style="padding: 20px;">
     <router-outlet></router-outlet>
